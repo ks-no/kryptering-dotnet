@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>KS FIKS Common Crypto</Title>
+        <Authors>KS</Authors>
+        <Copyright>KS</Copyright>
+        <PackageProjectUrl>https://github.com/ks-no/kryptering-dotnet</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/ks-no/kryptering-dotnet/raw/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>git@github.com:ks-no/kryptering-dotnet.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>FIKS</PackageTags>
+        <PackageVersion>1.0.0-alpha</PackageVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Portable.BouncyCastle" Version="1.8.5"/>
+        <PackageReference Include="System.Security.Cryptography.OpenSsl" Version="4.5.0"/>
+    </ItemGroup>
+
+</Project>
