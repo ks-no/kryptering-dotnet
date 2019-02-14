@@ -5,12 +5,14 @@ pipeline {
   agent {
     docker {
       image 'microsoft/dotnet:sdk'
-      args '-v $HOME/.dotnet:/root/.dotnet'
+      args '-v $HOME/.dotnet:/root/.dotnet -v $HOME/.nuget:/root/.nuget'
     }
   }
   stages {
     stage('Build') {
       steps {
+        sh 'whoami'
+        sh 'pwd'
         sh 'dotnet restore'
         sh 'dotnet dotnet build --no-restore -c Release'
       }
@@ -22,8 +24,8 @@ pipeline {
     }
   }
   post {
-    always {
-      xuint(thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ])
+    success {
+      xunit(thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ])
     }
   }
 }
