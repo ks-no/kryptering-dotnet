@@ -24,7 +24,7 @@ pipeline {
   post {
     success {
       xunit(  thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-              tools: [MStest(pattern: '**/*.trx', stopProcessingIfError: false)]
+              tools: [ MSTest(pattern: '**/*.trx') ]
       )
     }
   }
