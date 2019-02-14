@@ -5,7 +5,7 @@ pipeline {
   agent {
     docker {
       image 'microsoft/dotnet:sdk'
-      args '-v $HOME/.dotnet:/root/.dotnet -v $HOME/.nuget:/root/.nuget'
+      args '-v $HOME/.dotnet:/root/.dotnet -v $HOME/.nuget:/root/.nuget -u root'
     }
   }
   stages {
