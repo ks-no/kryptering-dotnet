@@ -21,7 +21,14 @@ pipeline {
     }
     stage('Run tests') {
       steps {
-        sh 'dotnet test --verbosity normal --logger "trx;LogFileName=results.trx"'
+        sh 'dotnet test --no-build --verbosity normal --logger "trx;LogFileName=results.trx"'
+      }
+      post {
+        success {
+          xunit(  thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+                  tools: [ MSTest(pattern: '**/*.trx') ]
+          )
+        }
       }
     }
     stage('Push to NuGet server') {
@@ -30,11 +37,5 @@ pipeline {
       }
     }
   }
-  post {
-    success {
-      xunit(  thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-              tools: [ MSTest(pattern: '**/*.trx') ]
-      )
-    }
-  }
+
 }
