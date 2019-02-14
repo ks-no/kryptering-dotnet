@@ -5,7 +5,6 @@ pipeline {
   agent {
     docker {
       image 'microsoft/dotnet:sdk'
-      args '-v ${PWD}:/app -w /app'
     }
   }
   stages {
