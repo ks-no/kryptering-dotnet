@@ -1,7 +1,4 @@
 pipeline {
-  options() {
-    disableConcurrentBuilds()
-  }
   agent {
     docker {
       image 'microsoft/dotnet:sdk'
