@@ -17,14 +17,14 @@ pipeline {
     }
     stage('Run tests') {
       steps {
-        sh 'dotnet test'
+        sh 'dotnet test --verbosity normal --logger "trx;LogFileName=results.trx"'
       }
     }
   }
   post {
     success {
       xunit(  thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-              tools: [ BoostTest(pattern: 'boost/*.xml') ]
+              tools: [$class: 'MSTest', pattern: '**/*.trx'])
       )
     }
   }
