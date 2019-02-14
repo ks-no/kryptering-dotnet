@@ -13,6 +13,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'dotnet restore'
+        sh 'dotnet build --no-restore -c Debug'
         sh 'dotnet build --no-restore -c Release'
       }
     }
