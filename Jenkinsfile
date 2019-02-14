@@ -36,6 +36,11 @@ pipeline {
           sh 'dotnet nuget push */bin/Release/*.nupkg -k $NUGET_ACCESS_KEY -s $NUGET_PUSH_REPO'
       }
     }
+    post {
+      always {
+        archiveArtifacts(artifacts: '**/*.nupkg', onlyIfSuccessful: true)
+      }
+    }
   }
 
 }
