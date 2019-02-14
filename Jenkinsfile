@@ -11,10 +11,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'whoami'
-        sh 'pwd'
         sh 'dotnet restore'
-        sh 'dotnet dotnet build --no-restore -c Release'
+        sh 'dotnet build --no-restore -c Release'
       }
     }
     stage('Run tests') {
