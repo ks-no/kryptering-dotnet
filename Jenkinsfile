@@ -40,6 +40,7 @@ pipeline {
   post {
     always {
       archiveArtifacts(artifacts: '**/*.nupkg', onlyIfSuccessful: true)
+      sh 'dotnet clean'
     }
   }
 }
