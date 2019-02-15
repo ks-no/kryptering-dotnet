@@ -18,4 +18,16 @@
         <ProjectReference Include="..\KS.Fiks.Crypto\KS.Fiks.Crypto.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="fiks_demo_public.pem"/>
+        <EmbeddedResource Include="fiks_demo_private.pem">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="fiks_demo_private.pem"/>
+        <EmbeddedResource Include="fiks_demo_public.pem">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+
 </Project>
