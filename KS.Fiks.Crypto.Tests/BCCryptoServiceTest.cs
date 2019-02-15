@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,11 +10,34 @@ namespace KS.Fiks.Crypto.Tests
 {
     public class BCCryptoServiceTest
     {
+        private static byte[] GenerateTestData(int size)
+        {
+            var data = new byte[size];
+            for (var i = 0; i < size; i++) data[i] = (byte) (i & 0xff);
+
+            return data;
+        }
+
+        private static BCCryptoService CreateCryptoServiceForTest()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = assembly.GetManifestResourceNames().Single(str =>
+                str.EndsWith("fiks_demo_public.pem", StringComparison.CurrentCulture));
+
+            X509Certificate x509Certificate;
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                x509Certificate = new X509CertificateParser().ReadCertificate(stream);
+            }
+
+            return BCCryptoService.Factory.Create(x509Certificate);
+        }
+
         [Fact(DisplayName = "Create Bouncy Castle Crypto Service")]
         public void Create()
         {
-            var bcCryptoService = CreateCryptoServiceForTest();
-            bcCryptoService.Should().BeOfType<BCCryptoService>();
+            var cryptoService = CreateCryptoServiceForTest();
+            cryptoService.Should().BeOfType<BCCryptoService>();
         }
 
         [Fact(DisplayName = "Create EncryptStream")]
@@ -55,31 +79,6 @@ namespace KS.Fiks.Crypto.Tests
                     outStream.ToArray().Should().NotBeEmpty();
                 }
             }
-        }
-
-        private static BCCryptoService CreateCryptoServiceForTest()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("fiks_demo_public.pem"));
-
-            X509Certificate x509Certificate;
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                x509Certificate = new X509CertificateParser().ReadCertificate(stream);
-            }
-
-            return BCCryptoService.Factory.Create(x509Certificate);
-        }
-
-        private static byte[] GenerateTestData(int size)
-        {
-            var data = new byte[size];
-            for (var i = 0; i < size; i++)
-            {
-                data[i] = (byte) (i & 0xff);
-            }
-
-            return data;
         }
     }
 }

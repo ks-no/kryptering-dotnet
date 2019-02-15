@@ -14,7 +14,7 @@
         <PackageVersion>1.0.0-alpha</PackageVersion>
     </PropertyGroup>
     <PropertyGroup>
-        <CodeAnalysisRuleSet>fiks.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\fiks.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DebugType>full</DebugType>

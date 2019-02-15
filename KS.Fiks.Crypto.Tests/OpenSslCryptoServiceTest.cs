@@ -12,17 +12,7 @@ namespace KS.Fiks.Crypto.Tests
         public void CreateService()
         {
             var openSslCryptoService = OpenSslCryptoService.Factory.Create();
-            openSslCryptoService.Should().BeOfType<Crypto.OpenSslCryptoService>();
-        }
-
-        [Fact]
-        public void Encrypt()
-        {
-            var openSslCryptoService = OpenSslCryptoService.Factory.Create();
-            var mockStream = new Mock<Stream>();
-            openSslCryptoService.Invoking(s => s.Encrypt(mockStream.Object))
-                .Should().Throw<NotImplementedException>();
-            mockStream.VerifyNoOtherCalls();
+            openSslCryptoService.Should().BeOfType<OpenSslCryptoService>();
         }
 
         [Fact]
@@ -31,6 +21,16 @@ namespace KS.Fiks.Crypto.Tests
             var openSslCryptoService = OpenSslCryptoService.Factory.Create();
             var mockStream = new Mock<Stream>();
             openSslCryptoService.Invoking(s => s.Decrypt(mockStream.Object))
+                .Should().Throw<NotImplementedException>();
+            mockStream.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void Encrypt()
+        {
+            var openSslCryptoService = OpenSslCryptoService.Factory.Create();
+            var mockStream = new Mock<Stream>();
+            openSslCryptoService.Invoking(s => s.Encrypt(mockStream.Object))
                 .Should().Throw<NotImplementedException>();
             mockStream.VerifyNoOtherCalls();
         }
