@@ -44,5 +44,12 @@
         </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="rsa_private_key.pem"/>
+        <EmbeddedResource Include="rsa_private_key.pem">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
 
 </Project>
