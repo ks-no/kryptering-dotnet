@@ -15,28 +15,6 @@ namespace KS.Fiks.Crypto.Tests
             cryptoService.Should().BeOfType<BCCryptoService>();
         }
 
-        [Fact(DisplayName = "Create EncryptStream")]
-        public void CreateEncryptStream()
-        {
-            using (var encryptionStream = CreateCryptoServiceForTest().CreateEncryptionStream())
-            {
-                encryptionStream.Should().NotBeNull();
-                var testData = GetTestDataFromResource();
-                using (var testDataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData)))
-                {
-                    testDataStream.CopyTo(encryptionStream);
-                }
-
-                encryptionStream.Length.Should().BeGreaterThan(0L);
-                using (var encryptedBufferStream = new MemoryStream())
-                {
-                    encryptionStream.Seek(0L, SeekOrigin.Begin);
-                    encryptionStream.CopyTo(encryptedBufferStream);
-                    encryptedBufferStream.Length.Should().BeGreaterThan(0);
-                }
-            }
-        }
-
         [Fact(DisplayName = "Perform decryption")]
         public void Decrypt()
         {

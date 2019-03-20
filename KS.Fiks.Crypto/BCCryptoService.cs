@@ -69,14 +69,5 @@ namespace KS.Fiks.Crypto
                 unEncryptedStream.CopyTo(encryptedStream);
             }
         }
-
-        public EncodedStream CreateEncryptionStream()
-        {
-            var cmsEnvelopedDataStreamGenerator = new CmsEnvelopedDataStreamGenerator();
-            cmsEnvelopedDataStreamGenerator.AddRecipientInfoGenerator(new CmsKeyTransRecipientInfoGenerator(
-                this.certificate, new Asn1KeyWrapper("RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING", this.certificate)));
-
-            return new EncodedStream(new MemoryStream(), cmsEnvelopedDataStreamGenerator);
-        }
     }
 }
