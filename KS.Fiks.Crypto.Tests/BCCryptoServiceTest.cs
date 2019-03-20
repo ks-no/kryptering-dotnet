@@ -8,26 +8,6 @@ namespace KS.Fiks.Crypto.Tests
 {
     public class BCCryptoServiceTest
     {
-        private static BCCryptoService CreateCryptoServiceForTest()
-        {
-            return BCCryptoService.Create(ReadCertificatePem(), ReadPrivateKeyPem());
-        }
-
-        private static string ReadCertificatePem()
-        {
-            return TestDataUtil.GetContentFromResource("fiks_demo_public.pem");
-        }
-
-        private static string ReadPrivateKeyPem()
-        {
-            return TestDataUtil.GetContentFromResource("fiks_demo_private.pem");
-        }
-
-        private static string GetTestDataFromResource()
-        {
-            return TestDataUtil.GetContentFromResource("LoremIpsum.txt");
-        }
-
         [Fact(DisplayName = "Create Bouncy Castle Crypto Service")]
         public void Create()
         {
@@ -95,6 +75,26 @@ namespace KS.Fiks.Crypto.Tests
                     preEncryptedBase64Data.Should().Be(base64EncryptedData);
                 }
             }
+        }
+
+        private static BCCryptoService CreateCryptoServiceForTest()
+        {
+            return BCCryptoService.Create(ReadCertificatePem(), ReadPrivateKeyPem());
+        }
+
+        private static string ReadCertificatePem()
+        {
+            return TestDataUtil.GetContentFromResource("fiks_demo_public.pem");
+        }
+
+        private static string ReadPrivateKeyPem()
+        {
+            return TestDataUtil.GetContentFromResource("fiks_demo_private.pem");
+        }
+
+        private static string GetTestDataFromResource()
+        {
+            return TestDataUtil.GetContentFromResource("LoremIpsum.txt");
         }
     }
 }

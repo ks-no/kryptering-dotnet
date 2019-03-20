@@ -20,26 +20,6 @@ namespace KS.Fiks.Crypto
             this.privateKey = privateKey;
         }
 
-        public Stream Decrypt(Stream encryptedStream)
-        {
-            return DecryptStreamConverter.Decrypt(this.privateKey, encryptedStream);
-        }
-
-        public Stream Encrypt(Stream unEncryptedStream)
-        {
-            var cmsEnvelopedDataStreamGenerator = new CmsEnvelopedDataStreamGenerator();
-            cmsEnvelopedDataStreamGenerator.AddRecipientInfoGenerator(new CmsKeyTransRecipientInfoGenerator(
-                this.certificate, new Asn1KeyWrapper("RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING", this.certificate)));
-            var backingStream = new MemoryStream();
-            using (var encryptedStream =
-                cmsEnvelopedDataStreamGenerator.Open(backingStream, CmsEnvelopedGenerator.Aes256Cbc))
-            {
-                unEncryptedStream.CopyTo(encryptedStream);
-                backingStream.Seek(0L, SeekOrigin.Begin);
-                return backingStream;
-            }
-        }
-
         public static BCCryptoService Create(X509Certificate certificate, AsymmetricKeyParameter privateKey)
         {
             if (certificate == null)
@@ -70,6 +50,26 @@ namespace KS.Fiks.Crypto
             return Create(
                 X509CertificateReader.ExtractCertificate(pemPublicKeyString),
                 AsymmetricKeyParameterReader.ExtractPrivateKey(pemPrivateKeyString));
+        }
+
+        public Stream Decrypt(Stream encryptedStream)
+        {
+            return DecryptStreamConverter.Decrypt(this.privateKey, encryptedStream);
+        }
+
+        public Stream Encrypt(Stream unEncryptedStream)
+        {
+            var cmsEnvelopedDataStreamGenerator = new CmsEnvelopedDataStreamGenerator();
+            cmsEnvelopedDataStreamGenerator.AddRecipientInfoGenerator(new CmsKeyTransRecipientInfoGenerator(
+                this.certificate, new Asn1KeyWrapper("RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING", this.certificate)));
+            var backingStream = new MemoryStream();
+            using (var encryptedStream =
+                cmsEnvelopedDataStreamGenerator.Open(backingStream, CmsEnvelopedGenerator.Aes256Cbc))
+            {
+                unEncryptedStream.CopyTo(encryptedStream);
+                backingStream.Seek(0L, SeekOrigin.Begin);
+                return backingStream;
+            }
         }
 
         public EncodedStream CreateEncryptionStream()
