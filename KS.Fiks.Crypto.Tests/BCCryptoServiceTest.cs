@@ -1,36 +1,31 @@
-using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
+using System.Text;
 using FluentAssertions;
-using Org.BouncyCastle.X509;
+using Org.BouncyCastle.Utilities.Encoders;
 using Xunit;
 
 namespace KS.Fiks.Crypto.Tests
 {
     public class BCCryptoServiceTest
     {
-        private static byte[] GenerateTestData(int size)
-        {
-            var data = new byte[size];
-            for (var i = 0; i < size; i++) data[i] = (byte) (i & 0xff);
-
-            return data;
-        }
-
         private static BCCryptoService CreateCryptoServiceForTest()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = assembly.GetManifestResourceNames().Single(str =>
-                str.EndsWith("fiks_demo_public.pem", StringComparison.CurrentCulture));
+            return BCCryptoService.Create(ReadCertificatePem(), ReadPrivateKeyPem());
+        }
 
-            X509Certificate x509Certificate;
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                x509Certificate = new X509CertificateParser().ReadCertificate(stream);
-            }
+        private static string ReadCertificatePem()
+        {
+            return TestDataUtil.GetContentFromResource("fiks_demo_public.pem");
+        }
 
-            return BCCryptoService.Factory.Create(x509Certificate);
+        private static string ReadPrivateKeyPem()
+        {
+            return TestDataUtil.GetContentFromResource("fiks_demo_private.pem");
+        }
+
+        private static string GetTestDataFromResource()
+        {
+            return TestDataUtil.GetContentFromResource("LoremIpsum.txt");
         }
 
         [Fact(DisplayName = "Create Bouncy Castle Crypto Service")]
@@ -46,8 +41,8 @@ namespace KS.Fiks.Crypto.Tests
             using (var encryptionStream = CreateCryptoServiceForTest().CreateEncryptionStream())
             {
                 encryptionStream.Should().NotBeNull();
-                var testData = GenerateTestData(2000);
-                using (var testDataStream = new MemoryStream(testData))
+                var testData = GetTestDataFromResource();
+                using (var testDataStream = new MemoryStream(Encoding.UTF8.GetBytes(testData)))
                 {
                     testDataStream.CopyTo(encryptionStream);
                 }
@@ -62,21 +57,42 @@ namespace KS.Fiks.Crypto.Tests
             }
         }
 
-        [Fact(DisplayName = "Perform encryption")]
+        [Fact(DisplayName = "Perform decryption")]
+        public void Decrypt()
+        {
+            var unencryptedDataChunk = TestDataUtil.GetContentFromResource("UnencryptedData.txt");
+            var encryptedData = Base64.Decode(TestDataUtil.GetContentFromResource("EncryptedData.txt"));
+            var cryptoService = CreateCryptoServiceForTest();
+            using (var encryptedDataStream = new MemoryStream(encryptedData))
+            {
+                using (var decryptedDataStream = cryptoService.Decrypt(encryptedDataStream))
+                using (var decryptedStuff = new MemoryStream())
+                {
+                    decryptedDataStream.CopyTo(decryptedStuff);
+                    var decryptedDataChunk = decryptedStuff.ToArray();
+                    var decryptedDataString = Encoding.UTF8.GetString(decryptedDataChunk);
+
+                    decryptedDataString.Should().Be(unencryptedDataChunk);
+                }
+            }
+        }
+
+        [Fact(DisplayName = "Perform encryption", Skip = "true")]
         public void Encrypt()
         {
-            var testData = GenerateTestData(2000);
+            var testDataContent = GetTestDataFromResource();
+            var testData = Encoding.UTF8.GetBytes(testDataContent);
 
-            using (var memoryStream = new MemoryStream(testData))
-            using (var encryptedStream = CreateCryptoServiceForTest().Encrypt(memoryStream))
+            var cryptoService = CreateCryptoServiceForTest();
+            using (var unencryptedStream = new MemoryStream(testData))
+            using (var cryptoStream = cryptoService.Encrypt(unencryptedStream))
             {
-                encryptedStream.Should().NotBeNull();
-                encryptedStream.CanRead.Should().BeTrue();
-                using (var outStream = new MemoryStream(2000))
+                using (var encryptedOutStream = new MemoryStream())
                 {
-                    encryptedStream.CopyTo(outStream);
-                    outStream.Length.Should().BeGreaterThan(0);
-                    outStream.ToArray().Should().NotBeEmpty();
+                    cryptoStream.CopyTo(encryptedOutStream);
+                    var base64EncryptedData = Base64.ToBase64String(encryptedOutStream.ToArray());
+                    var preEncryptedBase64Data = TestDataUtil.GetContentFromResource("EncryptedData.txt");
+                    preEncryptedBase64Data.Should().Be(base64EncryptedData);
                 }
             }
         }

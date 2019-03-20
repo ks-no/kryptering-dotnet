@@ -2,28 +2,34 @@ using System;
 using System.IO;
 using Org.BouncyCastle.Cms;
 
-namespace KS.Fiks.Crypto
+namespace KS.Fiks.Crypto.BouncyCastle
 {
-    internal class EncodedStream : Stream
+    public class EncodedStream : Stream
     {
-        private readonly Stream backingStream;
         private readonly Stream cryptoStream;
 
         public EncodedStream(Stream backingStream, CmsEnvelopedDataStreamGenerator generator)
         {
-            this.backingStream = backingStream;
-            this.cryptoStream = generator.Open(this.backingStream, CmsEnvelopedGenerator.Aes256Cbc);
+            BackingStream = backingStream;
+
+            this.cryptoStream = generator.Open(BackingStream, CmsEnvelopedGenerator.Aes256Cbc);
         }
 
-        public override bool CanRead => this.backingStream.CanRead;
+        public override bool CanRead => BackingStream.CanRead;
 
-        public override bool CanSeek => this.backingStream.CanSeek;
+        public override bool CanSeek => BackingStream.CanSeek;
 
         public override bool CanWrite => this.cryptoStream.CanWrite;
 
-        public override long Length => this.backingStream.Length;
+        public override long Length => BackingStream.Length;
 
-        public override long Position { get; set; }
+        public override long Position
+        {
+            get => BackingStream.Position;
+            set => BackingStream.Position = value;
+        }
+
+        public Stream BackingStream { get; }
 
         public override void Flush()
         {
@@ -32,12 +38,12 @@ namespace KS.Fiks.Crypto
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return this.backingStream.Read(buffer, offset, count);
+            return BackingStream.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return this.backingStream.Seek(offset, origin);
+            return BackingStream.Seek(offset, origin);
         }
 
         public override void SetLength(long value)
@@ -52,8 +58,8 @@ namespace KS.Fiks.Crypto
 
         protected override void Dispose(bool disposing)
         {
-            this.cryptoStream.Dispose();
-            this.backingStream.Dispose();
+            this.cryptoStream.Close();
+            BackingStream.Close();
         }
     }
 }
