@@ -6,6 +6,7 @@
         <Title>KS FIKS Common Crypto</Title>
         <Authors>KS</Authors>
         <Copyright>KS</Copyright>
+        <RootNamespace>KS.Fiks.Crypto</RootNamespace>
         <PackageProjectUrl>https://github.com/ks-no/kryptering-dotnet</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ks-no/kryptering-dotnet/raw/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>git@github.com:ks-no/kryptering-dotnet.git</RepositoryUrl>
