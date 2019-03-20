@@ -6,6 +6,6 @@ namespace KS.Fiks.Crypto
     {
         Stream Decrypt(Stream encryptedStream);
 
-        Stream Encrypt(Stream unEncryptedStream);
+        void Encrypt(Stream unEncryptedStream, Stream encryptedOutStream);
     }
 }

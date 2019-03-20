@@ -57,23 +57,29 @@ namespace KS.Fiks.Crypto.Tests
             }
         }
 
-        [Fact(DisplayName = "Perform encryption", Skip = "true")]
+        [Fact(DisplayName = "Perform encryption")]
         public void Encrypt()
         {
             var testDataContent = GetTestDataFromResource();
             var testData = Encoding.UTF8.GetBytes(testDataContent);
 
             var cryptoService = CreateCryptoServiceForTest();
+            byte[] encryptedData = null;
+            using (var encryptedStream = new MemoryStream())
             using (var unencryptedStream = new MemoryStream(testData))
-            using (var cryptoStream = cryptoService.Encrypt(unencryptedStream))
             {
-                using (var encryptedOutStream = new MemoryStream())
-                {
-                    cryptoStream.CopyTo(encryptedOutStream);
-                    var base64EncryptedData = Base64.ToBase64String(encryptedOutStream.ToArray());
-                    var preEncryptedBase64Data = TestDataUtil.GetContentFromResource("EncryptedData.txt");
-                    preEncryptedBase64Data.Should().Be(base64EncryptedData);
-                }
+                cryptoService.Encrypt(unencryptedStream, encryptedStream);
+                encryptedData = encryptedStream.ToArray();
+            }
+
+            using (var encryptedStream = new MemoryStream(encryptedData))
+            using (var decryptedStream = cryptoService.Decrypt(encryptedStream))
+            using (var decryptionBuffer = new MemoryStream())
+            {
+                decryptedStream.CopyTo(decryptionBuffer);
+                var decryptedData = decryptionBuffer.ToArray();
+                var decryptedString = Encoding.UTF8.GetString(decryptedData);
+                decryptedString.Should().Be(testDataContent);
             }
         }
 

@@ -57,18 +57,16 @@ namespace KS.Fiks.Crypto
             return DecryptStreamConverter.Decrypt(this.privateKey, encryptedStream);
         }
 
-        public Stream Encrypt(Stream unEncryptedStream)
+        public void Encrypt(Stream unEncryptedStream, Stream encryptedOutStream)
         {
             var cmsEnvelopedDataStreamGenerator = new CmsEnvelopedDataStreamGenerator();
+            cmsEnvelopedDataStreamGenerator.AddKeyTransRecipient(this.certificate);
             cmsEnvelopedDataStreamGenerator.AddRecipientInfoGenerator(new CmsKeyTransRecipientInfoGenerator(
                 this.certificate, new Asn1KeyWrapper("RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING", this.certificate)));
-            var backingStream = new MemoryStream();
             using (var encryptedStream =
-                cmsEnvelopedDataStreamGenerator.Open(backingStream, CmsEnvelopedGenerator.Aes256Cbc))
+                cmsEnvelopedDataStreamGenerator.Open(encryptedOutStream, CmsEnvelopedGenerator.Aes256Cbc))
             {
                 unEncryptedStream.CopyTo(encryptedStream);
-                backingStream.Seek(0L, SeekOrigin.Begin);
-                return backingStream;
             }
         }
 
