@@ -67,7 +67,8 @@ namespace KS.Fiks.Crypto
                 throw new ArgumentNullException(nameof(pemPrivateKeyString));
             }
 
-            return Create(X509CertificateReader.ExtractCertificate(pemPublicKeyString),
+            return Create(
+                X509CertificateReader.ExtractCertificate(pemPublicKeyString),
                 AsymmetricKeyParameterReader.ExtractPrivateKey(pemPrivateKeyString));
         }
 
