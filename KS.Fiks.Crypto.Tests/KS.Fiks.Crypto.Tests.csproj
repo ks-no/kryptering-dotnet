@@ -9,43 +9,43 @@
         <CodeAnalysisRuleSet>..\fiks.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="5.6.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1"/>
-        <PackageReference Include="Moq" Version="4.10.1"/>
-        <PackageReference Include="xunit" Version="2.4.1"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1"/>
-        <PackageReference Include="KS.Fiks.QA" Version="0.9.9-dev-63" PrivateAssets="All"/>
+        <PackageReference Include="FluentAssertions" Version="5.6.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+        <PackageReference Include="Moq" Version="4.10.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+        <PackageReference Include="KS.Fiks.QA" Version="0.9.9-dev-63" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\KS.Fiks.Crypto\KS.Fiks.Crypto.csproj"/>
+        <ProjectReference Include="..\KS.Fiks.Crypto\KS.Fiks.Crypto.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="fiks_demo_public.pem"/>
+        <None Remove="fiks_demo_public.pem" />
         <EmbeddedResource Include="fiks_demo_private.pem">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
-        <None Remove="fiks_demo_private.pem"/>
+        <None Remove="fiks_demo_private.pem" />
         <EmbeddedResource Include="fiks_demo_public.pem">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
-        <None Remove="LoremIpsum.txt"/>
+        <None Remove="LoremIpsum.txt" />
         <EmbeddedResource Include="LoremIpsum.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
-        <None Remove="UnencryptedData.txt"/>
+        <None Remove="UnencryptedData.txt" />
         <EmbeddedResource Include="UnencryptedData.txt">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
-        <None Remove="EncryptedData.txt"/>
+        <None Remove="EncryptedData.txt" />
         <EmbeddedResource Include="EncryptedData.txt">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="rsa_private_key.pem"/>
+        <None Remove="rsa_private_key.pem" />
         <EmbeddedResource Include="rsa_private_key.pem">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
