@@ -21,15 +21,13 @@ namespace KS.Fiks.Crypto.BouncyCastle
             var encryptionAlgorithm = cmsEnvelopedDataParser.EncryptionAlgOid;
             if (encryptionAlgorithm != CmsEnvelopedGenerator.Aes256Cbc)
             {
-                throw new Exception(
-                    $"Invalid encryption algorithm detected for CMS message. Expected {CmsEnvelopedGenerator.Aes256Cbc}, got {encryptionAlgorithm}");
+                throw new UnexpectedEncryptionAlgorithmException(CmsEnvelopedGenerator.Aes256Cbc, encryptionAlgorithm);
             }
 
             var recipientInformationStore = cmsEnvelopedDataParser.GetRecipientInfos();
             if (recipientInformationStore.Count < 1)
             {
-                throw new Exception(
-                    $"Number of recipients specified in the CMS is {recipientInformationStore.Count}. Expected < 1");
+                throw new UnexpectedRecipientCountException(recipientInformationStore.Count);
             }
 
             var recipients = recipientInformationStore.GetRecipients().Cast<RecipientInformation>();

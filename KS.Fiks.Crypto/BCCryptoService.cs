@@ -11,10 +11,11 @@ namespace KS.Fiks.Crypto
 {
     public class BCCryptoService : ICryptoService
     {
+        private const string AsnAlgoritm = "RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING";
         private readonly X509Certificate certificate;
         private readonly AsymmetricKeyParameter privateKey;
 
-        public BCCryptoService(X509Certificate certificate, AsymmetricKeyParameter privateKey)
+        private BCCryptoService(X509Certificate certificate, AsymmetricKeyParameter privateKey)
         {
             this.certificate = certificate;
             this.privateKey = privateKey;
@@ -62,7 +63,7 @@ namespace KS.Fiks.Crypto
             var cmsEnvelopedDataStreamGenerator = new CmsEnvelopedDataStreamGenerator();
             cmsEnvelopedDataStreamGenerator.AddKeyTransRecipient(this.certificate);
             cmsEnvelopedDataStreamGenerator.AddRecipientInfoGenerator(new CmsKeyTransRecipientInfoGenerator(
-                this.certificate, new Asn1KeyWrapper("RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING", this.certificate)));
+                this.certificate, new Asn1KeyWrapper(AsnAlgoritm, this.certificate)));
             using (var encryptedStream =
                 cmsEnvelopedDataStreamGenerator.Open(encryptedOutStream, CmsEnvelopedGenerator.Aes256Cbc))
             {

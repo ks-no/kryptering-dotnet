@@ -14,7 +14,7 @@
         <PackageReference Include="Moq" Version="4.10.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-        <PackageReference Include="KS.Fiks.QA" Version="0.9.9-dev-63" PrivateAssets="All" />
+        <PackageReference Include="KS.Fiks.QA" Version="0.9.9-dev-65" PrivateAssets="All"/>
     </ItemGroup>
 
     <ItemGroup>

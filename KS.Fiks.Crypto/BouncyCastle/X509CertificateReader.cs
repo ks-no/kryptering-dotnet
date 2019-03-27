@@ -6,8 +6,16 @@ using Org.BouncyCastle.X509;
 
 namespace KS.Fiks.Crypto.BouncyCastle
 {
+    /// <summary>
+    /// Reader for PEM encoded X509 certificates
+    /// </summary>
     public static class X509CertificateReader
     {
+        /// <summary>
+        /// Extracts X509 Certificate from a string
+        /// </summary>
+        /// <param name="pemPublicKey">A BASE64 PEM file containing a public X509 certificate</param>
+        /// <returns>A X509Certificate instance</returns>
         public static X509Certificate ExtractCertificate(string pemPublicKey)
         {
             var pemContent = pemPublicKey ?? throw new ArgumentNullException(nameof(pemPublicKey));
@@ -15,6 +23,11 @@ namespace KS.Fiks.Crypto.BouncyCastle
             return ExtractCertificateFromPemObject(certificatePem);
         }
 
+        /// <summary>
+        /// Extracts X509 Certificate from a stream
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
         public static X509Certificate ExtractCertificate(Stream stream)
         {
             return ExtractCertificateFromPemObject(PemObjectReader.ReadPem(stream));
