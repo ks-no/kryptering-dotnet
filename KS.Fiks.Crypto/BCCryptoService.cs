@@ -9,6 +9,9 @@ using Org.BouncyCastle.X509;
 
 namespace KS.Fiks.Crypto
 {
+    /// <summary>
+    /// Implementation of ICryptoService based on BouncyCastle C# portable
+    /// </summary>
     public class BCCryptoService : ICryptoService
     {
         private const string AsnAlgoritm = "RSA/NONE/OAEPWITHSHA256ANDMGF1PADDING";
@@ -21,6 +24,13 @@ namespace KS.Fiks.Crypto
             this.privateKey = privateKey;
         }
 
+        /// <summary>
+        /// Creates an instance of the BCCryptoService
+        /// </summary>
+        /// <param name="certificate">the public key to be used for encryption</param>
+        /// <param name="privateKey">the private key to be used for decryption</param>
+        /// <returns>A new instance of BCCryptoService</returns>
+        /// <exception cref="ArgumentNullException">If either parameter is null</exception>
         public static BCCryptoService Create(X509Certificate certificate, AsymmetricKeyParameter privateKey)
         {
             if (certificate == null)
@@ -36,6 +46,13 @@ namespace KS.Fiks.Crypto
             return new BCCryptoService(certificate, privateKey);
         }
 
+        /// <summary>
+        /// Creates an instance 
+        /// </summary>
+        /// <param name="pemPublicKeyString"></param>
+        /// <param name="pemPrivateKeyString"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static BCCryptoService Create(string pemPublicKeyString, string pemPrivateKeyString)
         {
             if (pemPublicKeyString == null)
