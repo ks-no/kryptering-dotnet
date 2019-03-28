@@ -13,7 +13,7 @@ All crypto is performed using a portable version of the [BouncyCastle library](h
 ## Example 
 ### Encryption
 ```c#
-var encryptionService = EncryptionService.Create(/* public certificate */, /* private key */);
+var encryptionService = EncryptionService.Create(/* public certificate */);
 using (var encryptedOutStream = /* create out stream */)
 using (var dataStream = /* the stream containing the unencrypted data */) 
 {
@@ -23,7 +23,7 @@ using (var dataStream = /* the stream containing the unencrypted data */)
 
 ### Decryption
 ```c#
-var decryptionService = DecryptionService.Create(/* public certificate */, /* private key */);
+var decryptionService = DecryptionService.Create(/* private key */);
 using (var encryptedDataInStream = /* stream containing the encrypted data */)
 using (var decryptedOutStream = /* a stream to write the unencrypted data to */)
 using (var decryptBufferStream = decryptionService.Decrypt(encryptedDataInStream))
