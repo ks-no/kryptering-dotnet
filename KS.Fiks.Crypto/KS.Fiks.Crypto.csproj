@@ -3,8 +3,8 @@
     <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>KS FIKS Common Crypto</Title>
-        <Authors>KS</Authors>
-        <Copyright>KS</Copyright>
+        <Authors>Ks-Kommunesektorens Organisasjon</Authors>
+        <Copyright>Ks-Kommunesektorens Organisasjon</Copyright>
         <RootNamespace>KS.Fiks.Crypto</RootNamespace>
         <PackageProjectUrl>https://github.com/ks-no/kryptering-dotnet</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ks-no/kryptering-dotnet/raw/master/LICENSE</PackageLicenseUrl>
