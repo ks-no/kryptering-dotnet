@@ -23,7 +23,7 @@ namespace KS.Fiks.Crypto.Tests
         [Fact(DisplayName = "Decryption")]
         public void Decrypt()
         {
-            var unencryptedDataChunk = TestDataUtil.GetContentFromResource("UnencryptedData.txt");
+            var unencryptedDataChunk = getUnEncryptedDataFromResource();
             var encryptedData = Base64.Decode(TestDataUtil.GetContentFromResource("EncryptedData.txt"));
             var cryptoService = CreateDecryptionService();
             using (var encryptedDataStream = new MemoryStream(encryptedData))
@@ -37,6 +37,16 @@ namespace KS.Fiks.Crypto.Tests
 
                     decryptedDataString.Should().Be(unencryptedDataChunk);
                 }
+            }
+        }
+
+        private string getUnEncryptedDataFromResource()
+        {
+            using (var unencryptedStream = TestDataUtil.GetContentStreamFromResource("UnencryptedData.txt"))
+            using (var bufferStream = new MemoryStream())
+            {
+                unencryptedStream.CopyTo(bufferStream);
+                return Encoding.UTF8.GetString(bufferStream.ToArray());
             }
         }
 
