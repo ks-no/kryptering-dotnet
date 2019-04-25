@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using FluentAssertions;
 using Org.BouncyCastle.Utilities.Encoders;
@@ -23,7 +24,7 @@ namespace KS.Fiks.Crypto.Tests
         [Fact(DisplayName = "Decryption")]
         public void Decrypt()
         {
-            var unencryptedDataChunk = getUnEncryptedDataFromResource();
+            var unencryptedDataChunk = TestDataUtil.GetContentFromResource("UnencryptedData.txt");
             var encryptedData = Base64.Decode(TestDataUtil.GetContentFromResource("EncryptedData.txt"));
             var cryptoService = CreateDecryptionService();
             using (var encryptedDataStream = new MemoryStream(encryptedData))
@@ -33,20 +34,11 @@ namespace KS.Fiks.Crypto.Tests
                 {
                     decryptedDataStream.CopyTo(decryptedStuff);
                     var decryptedDataChunk = decryptedStuff.ToArray();
-                    var decryptedDataString = Encoding.UTF8.GetString(decryptedDataChunk);
+                    var decryptedDataString = Encoding.UTF8.GetString(decryptedDataChunk)?.TrimEnd();
 
-                    decryptedDataString.Should().Be(unencryptedDataChunk);
+                    decryptedDataString.Equals(unencryptedDataChunk, StringComparison.InvariantCulture)
+                        .Should().BeTrue();
                 }
-            }
-        }
-
-        private string getUnEncryptedDataFromResource()
-        {
-            using (var unencryptedStream = TestDataUtil.GetContentStreamFromResource("UnencryptedData.txt"))
-            using (var bufferStream = new MemoryStream())
-            {
-                unencryptedStream.CopyTo(bufferStream);
-                return Encoding.UTF8.GetString(bufferStream.ToArray());
             }
         }
 
