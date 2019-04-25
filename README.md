@@ -5,7 +5,7 @@
 
 Common encryption and decryption logic required by various KS FIKS clients on the dotnet platform. All code is released under a MIT license 
 
-All crypto is performed using a portable version of the [BouncyCastle library](https://www.bouncycastle.org/csharp/) 
+All crypto is performed using a portable C# version of the [BouncyCastle library](https://www.bouncycastle.org/csharp/)
 
 ## Prerequisites
 * This library targets _.Net Core 2.2_ as well as _.Net Standard 2.0_
