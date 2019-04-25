@@ -9,7 +9,7 @@ namespace KS.Fiks.Crypto.Tests.BouncyCastle
         [Fact(DisplayName = "Extract private key")]
         public void ExtractPrivateKey()
         {
-            var privateKeyString = TestDataUtil.GetContentFromResource("fiks_demo_private.pem");
+            var privateKeyString = TestDataUtil.ReadPrivateKeyPem();
             var asymmetricKeyParameter = AsymmetricKeyParameterReader.ExtractPrivateKey(privateKeyString);
             asymmetricKeyParameter.Should().NotBeNull();
             asymmetricKeyParameter.IsPrivate.Should().BeTrue();
@@ -22,6 +22,13 @@ namespace KS.Fiks.Crypto.Tests.BouncyCastle
             var asymmetricKeyParameter = AsymmetricKeyParameterReader.ExtractPrivateKey(privateRsaKeyString);
             asymmetricKeyParameter.Should().NotBeNull();
             asymmetricKeyParameter.IsPrivate.Should().BeTrue();
+        }
+
+        [Fact(DisplayName = "Extract non-key")]
+        public void NotAPrivateKey()
+        {
+            var asymmetricKeyParameter = AsymmetricKeyParameterReader.ExtractPrivateKey("SOMETHING ELSE");
+            asymmetricKeyParameter.Should().BeNull();
         }
     }
 }

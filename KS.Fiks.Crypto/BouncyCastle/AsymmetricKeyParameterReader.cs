@@ -13,6 +13,11 @@ namespace KS.Fiks.Crypto.BouncyCastle
         public static AsymmetricKeyParameter ExtractPrivateKey(string pemPrivateKey)
         {
             var pemObject = PemObjectReader.ReadPem(pemPrivateKey);
+            if (pemObject == null)
+            {
+                return null;
+            }
+
             if (!pemObject.Type.EndsWith(RsaSuffix, StringComparison.CurrentCulture))
             {
                 return PrivateKeyFactory.CreateKey(pemObject.Content);
