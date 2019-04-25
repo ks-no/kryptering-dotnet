@@ -1,6 +1,7 @@
 # kryptering-dotnet
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ks-no/kryptering-dotnet/blob/master/LICENSE)
-![Nuget](https://img.shields.io/nuget/vpre/KS.Fiks.Crypto.svg)
+[![Nuget](https://img.shields.io/nuget/vpre/KS.Fiks.Crypto.svg)](https://www.nuget.org/packages/KS.Fiks.Crypto)
+[![GitHub issues](https://img.shields.io/github/issues-raw/ks-no/kryptering-dotnet.svg)](//github.com/ks-no/kryptering-dotnet/issues)
 
 Common encryption and decryption logic required by various KS FIKS clients on the dotnet platform. All code is released under a MIT license 
 
