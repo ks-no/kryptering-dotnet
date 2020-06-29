@@ -8,7 +8,7 @@ Common encryption and decryption logic required by various KS FIKS clients on th
 All crypto is performed using a portable C# version of the [BouncyCastle library](https://www.bouncycastle.org/csharp/)
 
 ## Prerequisites
-* This library targets _.Net Core 2.2_ as well as _.Net Standard 2.0_
+* This library targets _.Net Core 3.1_ as well as _.Net Standard 2.1_
 * A PEM file containing the BASE64 encoded public certificate to be used for encryption
 * A PEM file containing the BASE64 encoded private key to be used for decryption
 
