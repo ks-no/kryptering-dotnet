@@ -7,7 +7,8 @@
         <Copyright>Ks-Kommunesektorens Organisasjon</Copyright>
         <RootNamespace>KS.Fiks.Crypto</RootNamespace>
         <PackageProjectUrl>https://github.com/ks-no/kryptering-dotnet</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/ks-no/kryptering-dotnet/raw/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>KS.png</PackageIcon>
         <RepositoryUrl>git@github.com:ks-no/kryptering-dotnet.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>FIKS</PackageTags>
@@ -22,9 +23,19 @@
         <DebugType>full</DebugType>
         <DebugSymbols>True</DebugSymbols>
     </PropertyGroup>
+    <ItemGroup>
+        <None Include="KS.png">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../LICENSE">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+    </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Portable.BouncyCastle" Version="1.8.5.2" />
+        <PackageReference Include="Portable.BouncyCastle" Version="1.8.6.7"/>
         <PackageReference Include="KS.Fiks.QA" Version="1.0.0" PrivateAssets="All"/>
     </ItemGroup>
 
