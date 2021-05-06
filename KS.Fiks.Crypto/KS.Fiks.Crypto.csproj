@@ -17,11 +17,16 @@
         <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DebugType>full</DebugType>
         <DebugSymbols>True</DebugSymbols>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>kryptering.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <ItemGroup>
         <None Include="KS.png">
