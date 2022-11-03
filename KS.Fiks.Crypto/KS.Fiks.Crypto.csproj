@@ -17,7 +17,7 @@
         <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -34,6 +34,10 @@
             <PackagePath>/</PackagePath>
         </None>
         <None Include="../LICENSE">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../README.md">
             <Pack>true</Pack>
             <PackagePath>/</PackagePath>
         </None>
