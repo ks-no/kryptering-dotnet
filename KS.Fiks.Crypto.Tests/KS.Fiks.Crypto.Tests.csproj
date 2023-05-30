@@ -5,7 +5,7 @@
         <IsTestProject>true</IsTestProject>
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
-        <LangVersion>11</LangVersion>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\fiks.ruleset</CodeAnalysisRuleSet>
