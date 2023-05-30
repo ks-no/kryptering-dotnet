@@ -43,6 +43,9 @@
         <EmbeddedResource Include="EncryptedData.txt">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="invalid.pem">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
 
     </ItemGroup>
 
