@@ -9,7 +9,7 @@
         <PackageProjectUrl>https://github.com/ks-no/kryptering-dotnet</PackageProjectUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageIcon>KS.png</PackageIcon>
-        <RepositoryUrl>git@github.com:ks-no/kryptering-dotnet.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/ks-no/kryptering-dotnet.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>FIKS</PackageTags>
         <VersionPrefix>2.0.2</VersionPrefix>
