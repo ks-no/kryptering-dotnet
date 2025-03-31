@@ -14,7 +14,7 @@
         <PackageTags>FIKS</PackageTags>
         <VersionPrefix>2.0.5</VersionPrefix>
         <PackageIconUrl>https://ks-no.github.io/images/favicon.png</PackageIconUrl>
-        <TargetFrameworks>net6.0;netstandard2.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageReadmeFile>README.md</PackageReadmeFile>

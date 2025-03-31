@@ -5,7 +5,7 @@
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
         <LangVersion>10</LangVersion>
-        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\fiks.ruleset</CodeAnalysisRuleSet>
