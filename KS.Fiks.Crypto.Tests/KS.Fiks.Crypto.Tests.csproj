@@ -4,8 +4,8 @@
         <IsTestProject>true</IsTestProject>
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
-        <LangVersion>10</LangVersion>
-        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup>
         <CodeAnalysisRuleSet>..\fiks.ruleset</CodeAnalysisRuleSet>
