@@ -165,6 +165,8 @@ jobs:
               workflow_id: workflowId,
               ref: 'main',
               inputs: {
+                componentVersion,
+                componentPackageName: 'KS.Fiks.Crypto',
                 clientOwner,
                 clientRepo,
                 clientSha,
