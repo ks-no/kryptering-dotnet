@@ -182,13 +182,14 @@ jobs:
         with:
           github-token: ${{ steps.setup-github-app.outputs.app_token }}
           script: |
-            const clientOwner = context.repo.owner;
-            const clientRepo  = context.repo.repo;
-            const checkRunId  = Number('${{ steps.trigger.outputs.check-run-id }}');
+            const clientOwner    = context.repo.owner;
+            const clientRepo     = context.repo.repo;
+            const checkRunId     = Number('${{ steps.trigger.outputs.check-run-id }}');
             const pollIntervalMs = 30_000;
-            const maxAttempts = 100;
-            let attempts = 0;
+            const maxAttempts    = 100;
+            let attempts   = 0;
             let conclusion = null;
+            let timedOut   = false;
             while (attempts < maxAttempts) {
               await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
               const { data: updated } = await github.rest.checks.get({
@@ -196,14 +197,25 @@ jobs:
                 repo:  clientRepo,
                 check_run_id: checkRunId
               });
-              console.log(`[${++attempts}] status: ${updated.status}, conclusion: ${updated.conclusion}`);
+              console.log(`[${++attempts}/${maxAttempts}] status: ${updated.status}, conclusion: ${updated.conclusion}`);
               if (updated.status === 'completed') {
                 conclusion = updated.conclusion;
                 break;
               }
             }
-            if (conclusion !== 'success') {
-              core.setFailed(`Integration tests did not pass (conclusion: ${conclusion})`);
+            if (attempts >= maxAttempts && conclusion === null) {
+              timedOut = true;
+            }
+            if (timedOut) {
+              core.setFailed(
+                `Integrasjonstester tidsavbrutt etter ${maxAttempts * pollIntervalMs / 60_000} minutter. ` +
+                `Sjekk status manuelt: https://github.com/ks-no/kryptering-test-suite/actions`
+              );
+            } else if (conclusion !== 'success') {
+              core.setFailed(
+                `Integrasjonstester feilet (conclusion: ${conclusion}). ` +
+                `Sjekk: https://github.com/ks-no/kryptering-test-suite/actions`
+              );
             }
 
   build-windows:
