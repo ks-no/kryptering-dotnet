@@ -25,7 +25,7 @@ namespace KS.Fiks.Crypto.Tests
         {
             return GetContentFromResource(PrivateKeyResource);
         }
-        
+
         public static string ReadInvalidPrivateKeyPem()
         {
             return GetContentFromResource(InvalidKeyResource);
@@ -35,7 +35,7 @@ namespace KS.Fiks.Crypto.Tests
         {
             return AsymmetricKeyParameterReader.ExtractPrivateKey(ReadPrivateKeyPem());
         }
-        
+
         public static AsymmetricKeyParameter ReadInvalidPrivateKey()
         {
             return AsymmetricKeyParameterReader.ExtractPrivateKey(ReadInvalidPrivateKeyPem());

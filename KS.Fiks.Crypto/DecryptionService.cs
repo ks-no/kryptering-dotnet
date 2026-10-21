@@ -13,6 +13,7 @@ namespace KS.Fiks.Crypto
     public class DecryptionService : IDecryptionService
     {
         private readonly IReadOnlyCollection<AsymmetricKeyParameter> _privateKeys;
+        private readonly IReadOnlyCollection<DecryptionKey> _certificateKeys;
 
         internal DecryptionService(AsymmetricKeyParameter privateKey)
         {
@@ -33,6 +34,25 @@ namespace KS.Fiks.Crypto
             }
 
             _privateKeys = privateKeys.ToList();
+        }
+
+        internal DecryptionService(IEnumerable<DecryptionKey> keys)
+        {
+            if (keys == null)
+            {
+                throw new ArgumentNullException(nameof(keys));
+            }
+
+            _certificateKeys = keys.ToList();
+        }
+
+        /// <summary>
+        /// Creates a service that selects private keys by matching certificates to CMS recipients,
+        /// including recipients using legacy RSA PKCS#1 v1.5 key transport.
+        /// </summary>
+        public static DecryptionService Create(IEnumerable<DecryptionKey> keys)
+        {
+            return new DecryptionService(keys);
         }
 
         /// <summary>
@@ -79,7 +99,9 @@ namespace KS.Fiks.Crypto
                 throw new ArgumentException("Stream is not readable", nameof(encryptedStream));
             }
 
-            return DecryptStreamConverter.Decrypt(_privateKeys, encryptedStream);
+            return _certificateKeys != null
+                ? DecryptStreamConverter.Decrypt(_certificateKeys, encryptedStream)
+                : DecryptStreamConverter.Decrypt(_privateKeys, encryptedStream);
         }
     }
 }
