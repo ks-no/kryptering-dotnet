@@ -60,6 +60,17 @@ namespace KS.Fiks.Crypto.Tests
                 .ShouldBeTrue();
         }
 
+        [Fact(DisplayName = "Decryption with invalid private key fails correctly")]
+        public void DecryptWithInvalidPrivateKey()
+        {
+            var unencryptedDataChunk = TestDataUtil.GetContentFromResource("UnencryptedData.txt");
+            var encryptedData = Encrypt(unencryptedDataChunk);
+            var cryptoService = DecryptionService.Create([TestDataUtil.ReadInvalidPrivateKey()]);
+            using var encryptedDataStream = new MemoryStream(encryptedData);
+
+            Should.Throw<InvalidOperationException>(() => cryptoService.Decrypt(encryptedDataStream));
+        }
+
         private static byte[] Encrypt(string unencryptedData)
         {
             IEncryptionService encryptionService = EncryptionService.Create(TestDataUtil.ReadPublicCertificate());
