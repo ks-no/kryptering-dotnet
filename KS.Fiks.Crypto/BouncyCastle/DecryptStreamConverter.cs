@@ -32,7 +32,7 @@ namespace KS.Fiks.Crypto.BouncyCastle
                 throw new ArgumentException("At least one private key is required, and all keys must be private.", nameof(privateKeys));
             }
 
-            var recipients = GetRecipientInformation(encryptedStream);
+            var recipients = GetRecipientInformationOrderedByRsaOaepFirst(encryptedStream);
             if (privateKeys.Count == 1)
             {
                 return recipients[0].GetContentStream(privateKeys.First()).ContentStream;
@@ -86,7 +86,7 @@ namespace KS.Fiks.Crypto.BouncyCastle
                 throw new ArgumentException("At least one certificate-associated key is required, and entries must not be null.", nameof(keys));
             }
 
-            foreach (var recipient in GetRecipientInformation(encryptedStream))
+            foreach (var recipient in GetRecipientInformationOrderedByRsaOaepFirst(encryptedStream))
             {
                 var key = keys.FirstOrDefault(candidate => recipient.RecipientID.Match(candidate.Certificate));
                 if (key != null)
@@ -98,7 +98,9 @@ namespace KS.Fiks.Crypto.BouncyCastle
             throw new CmsException("No CMS recipient matches the supplied certificates.");
         }
 
-        private static List<RecipientInformation> GetRecipientInformation(Stream encryptedStream)
+        // Returns the recipient information in the order of preference for decryption, with RSA-OAEP recipients first.
+        // This is important because RSA-OAEP recipients can be rejected without reading the content, while PKCS#1 v1.5 recipients cannot.
+        private static List<RecipientInformation> GetRecipientInformationOrderedByRsaOaepFirst(Stream encryptedStream)
         {
             if (encryptedStream == null)
             {
