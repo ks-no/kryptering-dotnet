@@ -33,10 +33,6 @@ namespace KS.Fiks.Crypto.BouncyCastle
             }
 
             var recipients = GetRecipientInformationOrderedByRsaOaepFirst(encryptedStream);
-            if (privateKeys.Count == 1)
-            {
-                return recipients[0].GetContentStream(privateKeys.First()).ContentStream;
-            }
 
             // PKCS#1 v1.5 implicit rejection returns a random session key for an incorrect key.
             // Only OAEP unwrap failures can be used to try another key without reading the content.
@@ -45,6 +41,11 @@ namespace KS.Fiks.Crypto.BouncyCastle
                 .ToList();
             if (oaepRecipients.Count == 0)
             {
+                if (privateKeys.Count == 1)
+                {
+                    return recipients[0].GetContentStream(privateKeys.First()).ContentStream;
+                }
+
                 throw new CmsException("Multiple private keys require an RSA-OAEP recipient or certificate-associated DecryptionKey entries.");
             }
 

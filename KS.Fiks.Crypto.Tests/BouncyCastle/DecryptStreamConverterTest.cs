@@ -76,6 +76,16 @@ namespace KS.Fiks.Crypto.Tests.BouncyCastle
             ReadContent(decrypted).ShouldBe(Plaintext);
         }
 
+        [Fact]
+        public void SingleKeyDecryptionTriesOtherOaepRecipients()
+        {
+            using var encrypted = Encrypt(true, false, OtherKey.Value.Certificate, TestDataUtil.ReadPublicCertificate());
+
+            using var decrypted = DecryptionService.Create(TestDataUtil.ReadPrivateKey()).Decrypt(encrypted);
+
+            ReadContent(decrypted).ShouldBe(Plaintext);
+        }
+
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
