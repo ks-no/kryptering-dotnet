@@ -68,7 +68,12 @@ namespace KS.Fiks.Crypto.Tests
             var cryptoService = DecryptionService.Create([TestDataUtil.ReadInvalidPrivateKey()]);
             using var encryptedDataStream = new MemoryStream(encryptedData);
 
-            Should.Throw<InvalidOperationException>(() => cryptoService.Decrypt(encryptedDataStream));
+            var exception = Should.Throw<Org.BouncyCastle.Cms.CmsException>(
+                () => cryptoService.Decrypt(encryptedDataStream));
+
+            exception.Message.ShouldBe("None of the private keys could decrypt an RSA-OAEP recipient.");
+            exception.InnerException.ShouldBeOfType<InvalidOperationException>()
+                .Message.ShouldBe("RSA engine faulty decryption/signing detected");
         }
 
         private static byte[] Encrypt(string unencryptedData)

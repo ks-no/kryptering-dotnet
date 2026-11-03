@@ -34,3 +34,30 @@ using (var decryptBufferStream = decryptionService.Decrypt(encryptedDataInStream
     decryptBufferStream.CopyTo(decryptedOutStream);
 }
 ```
+
+### Decryption with multiple private keys
+
+The key-only `DecryptionService.Create` overloads try RSA-OAEP recipients when multiple
+private keys are supplied. Messages produced by this library include an RSA-OAEP recipient.
+With BouncyCastle 2.7 and later, a failed legacy RSA PKCS#1 v1.5 unwrap returns a random
+session key rather than throwing, so it cannot reliably identify the correct private key.
+
+For automatic key selection with legacy-only messages, associate each private key with
+its matching certificate. The service matches CMS recipient identifiers (issuer and
+serial number, or subject key identifier) before opening the decrypted stream:
+
+```c#
+var decryptionService = DecryptionService.Create(new[]
+{
+    new DecryptionKey(oldCertificate, oldPrivateKey),
+    new DecryptionKey(currentCertificate, currentPrivateKey)
+});
+```
+
+The certificate and private key parameters are BouncyCastle `X509Certificate` and
+`AsymmetricKeyParameter` instances. Key/certificate mismatches are rejected when creating
+a `DecryptionKey`. No certificate trust or validity check is performed by this association.
+If no certificate matches a recipient, decryption throws a `CmsException`.
+For legacy-only messages without certificates, select a single private key explicitly;
+supplying multiple unassociated keys throws a `CmsException`.
+Decrypted content remains streamed; it is not buffered to guess which key succeeded.
