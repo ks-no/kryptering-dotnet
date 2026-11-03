@@ -49,30 +49,7 @@ namespace KS.Fiks.Crypto.BouncyCastle
                 throw new CmsException("Multiple private keys require an RSA-OAEP recipient or certificate-associated DecryptionKey entries.");
             }
 
-            Exception lastException = null;
-            foreach (var recipient in oaepRecipients)
-            {
-                foreach (var privateKey in privateKeys)
-                {
-                    try
-                    {
-                        return recipient.GetContentStream(privateKey).ContentStream;
-                    }
-                    catch (CmsException exception) when (
-                        exception.InnerException is InvalidCipherTextException ||
-                        exception.InnerException is DataLengthException)
-                    {
-                        lastException = exception;
-                    }
-                    catch (InvalidOperationException exception)
-                    {
-                        // RSA's fault check also rejects malformed private keys before content is opened.
-                        lastException = exception;
-                    }
-                }
-            }
-
-            throw new CmsException("None of the private keys could decrypt an RSA-OAEP recipient.", lastException);
+            return GetContentStreamForOaepRecipients(privateKeys, oaepRecipients);
         }
 
         public static Stream Decrypt(IReadOnlyCollection<DecryptionKey> keys, Stream encryptedStream)
@@ -97,6 +74,34 @@ namespace KS.Fiks.Crypto.BouncyCastle
             }
 
             throw new CmsException("No CMS recipient matches the supplied certificates.");
+        }
+
+        private static Stream GetContentStreamForOaepRecipients(IReadOnlyCollection<AsymmetricKeyParameter> privateKeys, List<RecipientInformation> oaepRecipients)
+        {
+            Exception lastException = null;
+            foreach (var recipient in oaepRecipients)
+            {
+                foreach (var privateKey in privateKeys)
+                {
+                    try
+                    {
+                        return recipient.GetContentStream(privateKey).ContentStream;
+                    }
+                    catch (CmsException exception) when (
+                        exception.InnerException is InvalidCipherTextException ||
+                        exception.InnerException is DataLengthException)
+                    {
+                        lastException = exception;
+                    }
+                    catch (InvalidOperationException exception)
+                    {
+                        // RSA's fault check also rejects malformed private keys before content is opened.
+                        lastException = exception;
+                    }
+                }
+            }
+
+            throw new CmsException("None of the private keys could decrypt an RSA-OAEP recipient.", lastException);
         }
 
         // Returns the recipient information in the order of preference for decryption, with RSA-OAEP recipients first.
